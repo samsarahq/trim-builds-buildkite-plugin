@@ -1,0 +1,40 @@
+#!/bin/bash
+set -e
+set -o pipefail
+set -u
+
+echo "~~~ :broom: Running trim-builds plugin"
+
+echo "Checking disk space to see if old builds need to be trimmed"
+
+# Scope this var to this buildkite agent, so that we do not interfere with the builds from any other agents on this machine.
+BUILDS_DIR="/var/lib/buildkite-agent/builds/$BUILDKITE_AGENT_NAME/"
+
+echo "Checking disk space"
+if ! check-disk-space ; then
+
+    echo "Cleaning up past builds for this agent to make disk space"
+    rm -rf "$BUILDS_DIR"
+
+    echo "Checking disk space again"
+    if ! check-disk-space ; then 
+        echo "Disk health checks failed" >&2
+        exit 1
+    fi
+fi
+
+
+
+function check-disk-space {
+    DISK_AVAILABLE_BEFORE_TRIM=${DISK_AVAILABLE_BEFORE_TRIM:-10485760} # 10GB
+
+    disk_avail=$(df -k --output=avail "$BUILDS_DIR" | tail -n1)
+    echo "Disk space free: $(df -k -h --output=avail "$BUILDS_DIR" | tail -n1 | sed -e 's/^[[:space:]]//')"
+
+    if [[ $disk_avail -lt $DISK_AVAILABLE_BEFORE_TRIM ]]; then
+        echo "Not enough disk space free, cutoff is ${DISK_AVAILABLE_BEFORE_TRIM} :floppy_disk:" >&2
+        exit 1
+    fi
+
+    exit 0
+}
