@@ -24,7 +24,6 @@ BUILDS_DIR="$AGENT_DIR$BUILDKITE_AGENT_NAME/"
 echo "~~~ :broom: Running trim-builds plugin"
 echo "Checking disk space to see if old builds need to be trimmed"
 
-echo "Checking disk space"
 if ! check-disk-space ; then
     # If the build dir does not exist, this agent doesn't have old builds to trim - nothing to do here.
     if [ ! -d "$BUILDS_DIR" ]; then
