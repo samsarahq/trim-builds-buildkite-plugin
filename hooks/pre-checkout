@@ -23,6 +23,12 @@ echo "Checking disk space to see if old builds need to be trimmed"
 # Scope this var to this buildkite agent, so that we do not interfere with the builds from any other agents on this machine.
 BUILDS_DIR="/var/lib/buildkite-agent/builds/$BUILDKITE_AGENT_NAME/"
 
+# If the dir does not exist, then this agent has never run a build on this machine - there is nothing that is safe for us to clean up.
+if [ ! -d "$BUILDS_DIR" ]; then
+    echo "Build directory not found: $BUILDS_DIR - there are no old builds for this agent."
+    exit 0
+fi
+
 echo "Checking disk space"
 if ! check-disk-space ; then
 
