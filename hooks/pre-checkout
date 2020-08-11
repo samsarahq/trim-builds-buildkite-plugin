@@ -11,10 +11,10 @@ function check-disk-space {
 
     if [[ $disk_avail -lt $DISK_AVAILABLE_BEFORE_TRIM ]]; then
         echo "Not enough disk space free, cutoff is ${DISK_AVAILABLE_BEFORE_TRIM} :floppy_disk:" >&2
-        exit 1
+        return 1
     fi
 
-    exit 0
+    return 0
 }
 
 echo "~~~ :broom: Running trim-builds plugin"
