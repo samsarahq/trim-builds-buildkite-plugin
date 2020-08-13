@@ -1,24 +1,42 @@
-Trim Builds Buildkite Plugin
-============================
+# Trim Builds Buildkite Plugin
 
 A [Buildkite plugin](https://buildkite.com/docs/agent/plugins) to trim old builds from the file system to free up disk space.  Use with caution.
 
-Example
--------
+## Example
 
-```yaml
+Add the following to your `pipeline.yml`:
+
+```yml
 steps:
-  - command: bin/some-command
+  - command: ls
     plugins:
-      aws5295/trim-builds#commitHash: ~
+      - aws5295/trim-builds#v0.1.0:
+          minimum: 10485760
 ```
 
-Options
-=======
-### DISK_AVAILABLE_BEFORE_TRIM
-- Default: 10GB
-- The min disk space available before a trim takes place. If there is more disk space available than this, the plugin does nothing. If there is less, the plugin will delete all previous builds from the builds directory for this agent.
+## Configuration
 
-License
-=======
+### `minimum` (Optional, number)
+
+The minimum amount of disk space that must be free before the plugin attempts to delete old builds.
+Default is `10485760` (10 GB).
+
+## Developing
+
+To run the tests:
+
+```shell
+docker-compose run --rm tests
+```
+
+## Contributing
+
+1. Fork the repo
+2. Make the changes
+3. Run the tests
+4. Commit and push your changes
+5. Send a pull request
+
+## License
+
 MIT (see [LICENSE](LICENSE))

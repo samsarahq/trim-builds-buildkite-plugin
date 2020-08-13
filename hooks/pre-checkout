@@ -4,7 +4,7 @@ set -o pipefail
 set -u
 
 function check-disk-space {
-    DISK_AVAILABLE_BEFORE_TRIM=${DISK_AVAILABLE_BEFORE_TRIM:-10485760} # 10GB
+    DISK_AVAILABLE_BEFORE_TRIM=${BUILDKITE_PLUGIN_TRIM_BUILDS_MINIMUM:-10485760} # 10GB
 
     disk_avail=$(df -k --output=avail "$AGENT_DIR" | tail -n1)
     echo "Disk space free: $(df -k -h --output=avail "$AGENT_DIR" | tail -n1 | sed -e 's/^[[:space:]]//')"

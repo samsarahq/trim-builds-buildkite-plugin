@@ -1,0 +1,8 @@
+name: Trim builds
+description: Trims old builds when the disk space fills up on the machine
+author: https://github.com/aws5295
+requirements: []
+configuration:
+  properties:
+    minimum:
+      type: number
