@@ -10,7 +10,7 @@ Add the following to your `pipeline.yml`:
 steps:
   - command: ls
     plugins:
-      - aws5295/trim-builds#v0.1.0:
+      - samsarahq/trim-builds#v0.1.0:
           minimum: 10485760
 ```
 
